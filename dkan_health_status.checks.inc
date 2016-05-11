@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * Implements hook_dkan_health_status_monitors().
+ */
+function dkan_health_status_dkan_health_status_monitors() {
+  if (module_exists('acquia_search_multi_subs') && module_exists('acquia_agent')) {
+    // Make sure user mail addresses are valid.
+    $monitors['check_solr_index'] = array(
+      'name' => t('Check Solr Index'),
+      'description' => t('Ensures solr index matches dataset count.'),
+    );
+    return $monitors;
+  }
+}
+
+/**
+ * Checks Solr count vs node count.
+ */
+function dkan_health_status_dkan_health_status_monitor_check_solr_index($args) {
+  $index = search_api_index_load('datasets');
+
+  $query = $index->query()
+  ->fields()
+  ->range(0, 0);
+
+  $filter = $query->createFilter('AND', 'facet:type');
+  $filter->condition('type', 'dataset');
+  $query->filter($filter);
+  $response = $index->server()->search($query);
+  $search_count = $response['result count'];
+  $node_count = db_query("SELECT count(*) FROM {node} WHERE type = 'dataset' AND status = 1")->fetchField();
+
+  if ($node_count == $search_count) {
+    return dkan_health_status_message(DKAN_HEALTH_OKAY, t("Dataset count matches Solr count."));
+  }
+  else {
+    return dkan_health_status_message(DKAN_HEALTH_ERROR, t("Dataset count: !node_count does not match Search count: !search_count.",
+      array("!node_count" => $node_count, "!search_count" => $search_count)));
+  }
+}
+
