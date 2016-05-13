@@ -34,24 +34,14 @@ dependencies:
   override:
     - mkdir $CIRCLE_ARTIFACTS/junit
     - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH bash dkan-module-init.sh --deps --build=$DATABASE_URL'
-    - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH ahoy drush --yes runserver :8888':
         background: true
 
-    - wget http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar
-    - java -jar selenium-server-standalone-2.48.2.jar -quiet -p 4444 -log shut_up_selenium :
-        background: true
-  post:
-     - sudo apt-get install -y x11vnc
-     - x11vnc -forever -nopw:
+    - cd test; composer install; cd - 
         background: true
 
 ## Customize test commands
 test:
   override:
   # Fix for behat bug not recognizing symlinked feature files.
-     - bash dkan/test/circle-behat.sh  docroot/profiles/dkan/test/features --tags='~@fixme&&~@noworkflow':
-        parallel: true
-  post:
-    - echo $CIRCLE_ARTIFACTS; cp -av dkan/test/assets $CIRCLE_ARTIFACTS:
-        parallel: true
+     - cd test; bin/phpunit --bootstrap=boot.php phpunit/DKANHealthStatus.php
 

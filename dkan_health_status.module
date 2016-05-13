@@ -56,18 +56,37 @@ function dkan_health_status_menu() {
  * This is the same as health_api_access except it uses _GET not _POST.
  */
 function dkan_health_status_api_access() {
+  $key = isset($_GET['key']) ? $_GET['key'] : '';
+  $require_https = variable_get('dkan_health_status_api_require_https', FALSE);
+  $https_on = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : ''; 
+  $required_key = variable_get('dkan_health_status_health_api_access_key', FALSE);
+  return dkan_health_status_api_access($key, $require_http, $https_on, $required_key);
+}
+
+/**
+ * Checks access for endpoint.
+ *
+ * @param $key string
+ *   key query passed to endpoint
+ * @param $required_key string
+ *   key expected by the site 
+ * @param $require_https boolean
+ *   TRUE if https is required 
+ * @param $https_on boolean
+ *   TRUE if https is prt of the request 
+ */
+function dkan_health_status_api_access_check($key,  $required_key, $require_https, $https_on) {
   // Make sure they sent a key.
-  if (!isset($_GET['key']) || empty($_GET['key'])) {
+  if (!isset($key) || empty($key)) {
     return FALSE;
   }
   // Check if we are requiring HTTPS.
-  if (variable_get('dkan_health_status_api_require_https', FALSE) && $_SERVER['HTTPS'] !== "on") {
+  if ($require_https && !$https_on) {
     // User is not using HTTPS.
     return FALSE;
   }
-  $key = $_GET['key'];
   // Check the key versus the one we have stored.
-  if ($key !== variable_get('dkan_health_status_health_api_access_key', FALSE)) {
+  if ($key !== $required_key) {
     // Wrong key sent.
     return FALSE;
   }

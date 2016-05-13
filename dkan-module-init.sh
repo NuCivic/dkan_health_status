@@ -1,6 +1,6 @@
 
 # Name of the current module.
-DKAN_MODULE="dkan_workflow"
+DKAN_MODULE="dkan_health_status"
 
 # DKAN branch to use
 DKAN_BRANCH="7.x-1.x"
