@@ -1,0 +1,57 @@
+## Customize the test machine
+machine:
+
+  timezone:
+    America/New_York # Set the timezone
+
+  # Version of ruby to use
+  php:
+    version: '5.5.11'
+
+  # Add some environment variables
+  environment:
+
+    DATABASE_URL: mysql://ubuntu:@127.0.0.1:3306/circle_test
+## Customize checkout
+## Note: Only post is supported.
+checkout:
+  post:
+    # Remove the extra composer stuff that circleci loads and that is causing conflicts with drush.
+    - rm -rf ~/.composer
+
+## Customize dependencies
+dependencies:
+  # Increase the PHP memory limit.
+  pre:
+    - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini
+
+  cache_directories:
+     #- "test/vendor"
+     #- "~/.composer"
+     #- "~/.drush"
+     #- "~/backups"
+     #- "test/sites/default"
+  override:
+    - mkdir $CIRCLE_ARTIFACTS/junit
+    - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH bash dkan-module-init.sh --deps --build=$DATABASE_URL'
+    - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH ahoy drush --yes runserver :8888':
+        background: true
+
+    - wget http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar
+    - java -jar selenium-server-standalone-2.48.2.jar -quiet -p 4444 -log shut_up_selenium :
+        background: true
+  post:
+     - sudo apt-get install -y x11vnc
+     - x11vnc -forever -nopw:
+        background: true
+
+## Customize test commands
+test:
+  override:
+  # Fix for behat bug not recognizing symlinked feature files.
+     - bash dkan/test/circle-behat.sh  docroot/profiles/dkan/test/features --tags='~@fixme&&~@noworkflow':
+        parallel: true
+  post:
+    - echo $CIRCLE_ARTIFACTS; cp -av dkan/test/assets $CIRCLE_ARTIFACTS:
+        parallel: true
+
