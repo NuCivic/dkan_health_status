@@ -32,6 +32,3 @@ ahoy dkan module-link $DKAN_MODULE
 ahoy dkan module-make $DKAN_MODULE
 ahoy dkan reinstall
 ahoy drush en $DKAN_MODULE -y
-
- #Fix for behat bug not recognizing symlinked feature files or files outside it's root. See https://jira.govdelivery.com/browse/CIVIC-1005
-cp dkan_workflow/test/features/dkan_workflow.feature dkan/test/features/.
