@@ -16,7 +16,7 @@ machine:
 dependencies:
   # Increase the PHP memory limit.
   pre:
-    - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini:
+    - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini
     - bash dkan-module-init.sh --deps --build=$DATABASE_URL
 
 ## Customize test commands
