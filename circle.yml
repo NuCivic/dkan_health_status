@@ -41,5 +41,5 @@ dependencies:
 test:
   override:
   # Fix for behat bug not recognizing symlinked feature files.
-     - cd test; bin/phpunit --bootstrap=boot.php phpunit/DKANHealthStatus.php
+     - test/bin/phpunit --bootstrap=test/boot.php test/phpunit/DKANHealthStatus.php
 
