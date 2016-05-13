@@ -36,7 +36,6 @@ function dkan_health_status_menu() {
   $items['health/dkan'] = array(
     'title' => 'Health API',
     'description' => 'Health API callback.',
-    'delivery callback' => 'drupal_json_output', 
     'page callback' => 'dkan_health_status_api_json',
     'access callback' => 'dkan_health_status_api_access',
   );
@@ -45,7 +44,6 @@ function dkan_health_status_menu() {
     $items['health/dkan/' . $check_name] = array(
       'title' => $check['name'],
       'description' => $check['description'],
-      'delivery callback' => 'drupal_json_output', 
       'page callback' => 'dkan_health_status_api_json',
       'page arguments' => array($check_name),
       'access callback' => 'dkan_health_status_api_access',
@@ -120,5 +118,5 @@ function dkan_health_status_api_json($check_name = NULL) {
   else {
     $data = dkan_health_status_get_data();
   }
-  return $data;
+  return drupal_json_output($data);
 }

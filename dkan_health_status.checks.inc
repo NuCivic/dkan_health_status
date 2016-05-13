@@ -35,9 +35,7 @@ function dkan_health_status_dkan_health_status_monitor_check_solr_index() {
   else {
     return dkan_health_status_message(DKAN_HEALTH_ERROR, t("Dataset index could not be found."));
   }
-
   $node_count = db_query("SELECT count(*) FROM {node} WHERE type = 'dataset' AND status = 1")->fetchField();
-
   if ($node_count == $search_count) {
     return dkan_health_status_message(DKAN_HEALTH_OKAY, t("Dataset count: !node_count matches Search count: !search_count.",
       array("!node_count" => $node_count, "!search_count" => $search_count)));
@@ -47,4 +45,3 @@ function dkan_health_status_dkan_health_status_monitor_check_solr_index() {
       array("!node_count" => $node_count, "!search_count" => $search_count)));
   }
 }
-
