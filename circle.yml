@@ -33,7 +33,7 @@ dependencies:
      #- "test/sites/default"
   override:
     - mkdir $CIRCLE_ARTIFACTS/junit
-    - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH bash dkan-module-init.sh --deps --build=$DATABASE_URL'
+    - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH bash dkan-module-init.sh --deps --build=$DATABASE_URL':
         background: true
 
     - cd test; composer install; cd - 
