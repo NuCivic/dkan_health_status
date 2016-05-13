@@ -10,32 +10,14 @@ machine:
 
   # Add some environment variables
   environment:
-
     DATABASE_URL: mysql://ubuntu:@127.0.0.1:3306/circle_test
-## Customize checkout
-## Note: Only post is supported.
-checkout:
-  post:
-    # Remove the extra composer stuff that circleci loads and that is causing conflicts with drush.
-    - rm -rf ~/.composer
 
 ## Customize dependencies
 dependencies:
   # Increase the PHP memory limit.
   pre:
-    - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini
-
-  cache_directories:
-     #- "test/vendor"
-     #- "~/.composer"
-     #- "~/.drush"
-     #- "~/backups"
-     #- "test/sites/default"
-  override:
-    - mkdir $CIRCLE_ARTIFACTS/junit
-    - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH bash dkan-module-init.sh --deps --build=$DATABASE_URL':
-        background: true
-
+    - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini:
+    - bash dkan-module-init.sh --deps --build=$DATABASE_URL
 
 ## Customize test commands
 test:
