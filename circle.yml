@@ -36,7 +36,7 @@ dependencies:
     - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH bash dkan-module-init.sh --deps --build=$DATABASE_URL':
         background: true
 
-    - pwd; cd test; pwd; composer install; cd -:
+    - pwd; cd test; pwd; PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH install; cd -:
         background: true
 
 ## Customize test commands
