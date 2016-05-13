@@ -23,7 +23,8 @@ checkout:
 dependencies:
   # Increase the PHP memory limit.
   pre:
-    - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini
+    - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini:
+    - pwd; cd test; pwd; PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH install; cd -
 
   cache_directories:
      #- "test/vendor"
@@ -36,8 +37,6 @@ dependencies:
     - 'PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH bash dkan-module-init.sh --deps --build=$DATABASE_URL':
         background: true
 
-    - pwd; cd test; pwd; PATH=/home/ubuntu/.config/composer/vendor/bin:$PATH install; cd -:
-        background: true
 
 ## Customize test commands
 test:
