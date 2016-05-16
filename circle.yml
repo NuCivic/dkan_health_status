@@ -23,6 +23,7 @@ machine:
 checkout:
   post:
     # Remove the extra composer stuff that circleci loads and that is causing conflicts with drush.
+    - composer install
     - rm -rf ~/.composer
 
 ## Customize dependencies
