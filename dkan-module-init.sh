@@ -1,7 +1,6 @@
 
 # Name of the current module.
 DKAN_MODULE="dkan_health_status"
-DKAN_MODULE_TMP="dkan_health_status_tmp"
 
 # DKAN branch to use
 DKAN_BRANCH="7.x-1.x"
@@ -27,9 +26,8 @@ fi
 #Only stop on errors starting now..
 set -e
 # OK, run the script.
-cp -r $HOME/$DKAN_MODULE $HOME/$DKAN_MODULE_TMP
 bash /tmp/dkan-init.sh $DKAN_MODULE $@ --skip-reinstall --branch=$DKAN_BRANCH
 ahoy dkan module-link $DKAN_MODULE
 ahoy dkan reinstall
-cp -r $HOME/$DKAN_MODULE_TMP "docroot/sites/all/modules/$DKAN_MODULE_TMP"
+cp -r $DKAN_MODULE "docroot/sites/all/modules/$DKAN_MODULE"
 ahoy drush en $DKAN_MODULE -y
