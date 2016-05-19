@@ -2,6 +2,9 @@
 # Name of the current module.
 DKAN_MODULE="dkan_health_status"
 
+# Save for test run
+export DKAN_MODULE_NAME_DKAN_LINK="$HOME/$DKAN_MODULE_NAME/docroot/sites/all/modules/$DKAN_MODULE_NAME"
+
 # DKAN branch to use
 DKAN_BRANCH="7.x-1.x"
 
@@ -27,7 +30,7 @@ fi
 set -e
 # OK, run the script.
 bash /tmp/dkan-init.sh $DKAN_MODULE $@ --skip-reinstall --branch=$DKAN_BRANCH
-ahoy dkan module-link $DKAN_MODULE
 ahoy dkan reinstall
-cp -r $DKAN_MODULE "docroot/sites/all/modules/$DKAN_MODULE"
+# Adds module to repo
+cp -r $DKAN_MODULE $DKAN_MODULE_NAME_DKAN_LINK
 ahoy drush en $DKAN_MODULE -y
