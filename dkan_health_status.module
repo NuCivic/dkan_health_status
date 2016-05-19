@@ -60,7 +60,7 @@ function dkan_health_status_api_access() {
   $require_https = variable_get('dkan_health_status_api_require_https', FALSE);
   $https_on = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : ''; 
   $required_key = variable_get('dkan_health_status_health_api_access_key', FALSE);
-  return dkan_health_status_api_access($key, $require_http, $https_on, $required_key);
+  return dkan_health_status_api_access_check($key, $required_key, $require_https, $https_on);
 }
 
 /**
