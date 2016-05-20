@@ -39,7 +39,9 @@ dependencies:
     - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini
   override:
     - mkdir $CIRCLE_ARTIFACTS/junit
+    - printenv
     - . ./dkan-module-init.sh --deps --build=$DATABASE_URL
+    - printenv
     - 'ahoy drush --yes runserver :8888':
         background: true
 
