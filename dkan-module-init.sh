@@ -32,5 +32,5 @@ set -e
 bash /tmp/dkan-init.sh $DKAN_MODULE $@ --skip-reinstall --branch=$DKAN_BRANCH
 ahoy dkan reinstall
 # Adds module to repo
-cp -r $DKAN_MODULE $DKAN_MODULE_NAME_DKAN_LINK
+cp -r $DKAN_MODULE $DKAN_MODULE_LINK
 ahoy drush en $DKAN_MODULE -y
