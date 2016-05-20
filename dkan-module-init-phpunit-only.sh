@@ -54,7 +54,7 @@ mkdir $DKAN_MODULE_LINK 2> /dev/null && echo "Created ./$DKAN_MODULE_LINK folder
 rsync -a $PWD/ $DKAN_MODULE_LINK/ --exclude=$DKAN_MODULE --exclude=webroot --exclude=".git"
 cd webroot
 # If backup doesn't exist create one.
-if [[ ! -f "~/$DKAN_MODULE/backups/latest.sql"  ]]; then
+if [[ ! -f ~/$DKAN_MODULE/backups/latest.sql  ]]; then
   echo "Cached database doesn't exist. Installing DKAN."
   drush si dkan --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test" -y || true
   mkdir -p ~/$DKAN_MODULE/backups
