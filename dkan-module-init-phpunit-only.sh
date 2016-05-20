@@ -17,7 +17,7 @@ if [[ "$PATH" != *"$COMPOSER_PATH"* ]]; then
 fi
 
 if [[ ! -f webroot/index.php  ]]; then
-  wget -O http://dkan-acquia.nuamsdev.com/dkan-acquia.tar.gz 
+  wget http://dkan-acquia.nuamsdev.com/dkan-acquia.tar.gz 
   tar -zxf dkan-acquia.tar.gz
 fi
 
