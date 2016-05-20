@@ -40,9 +40,6 @@ else
   echo "> Drush already installed and up to date."
 fi
 
-mkdir $MODULE_NAME 2> /dev/null && echo "Created ./$MODULE_NAME folder.."
-rsync -av $PWD/ $DKAN_MODULE/ --exclude=$DKAN_MODULE --exclude=webroot
-
 if [[ ! -f webroot/index.php  ]]; then
   echo "Downloading latest DKAN"
   wget http://dkan-acquia.nuamsdev.com/dkan-acquia.tar.gz 
@@ -51,7 +48,10 @@ fi
 
 # Only stop on errors starting now..
 set -e
-cp -r $DKAN_MODULE $DKAN_MODULE_LINK
+# Create copy directory.
+
+mkdir $DKAN_MODULE_LINK 2> /dev/null && echo "Created ./$DKAN_MODULE_LINK folder.."
+rsync -av $PWD/ $DKAN_MODULE_LINK/ --exclude=$DKAN_MODULE --exclude=webroot --exclude=".git"
 cd webroot
 drush si dkan --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test" -y || true
 drush en $DKAN_MODULE -y
