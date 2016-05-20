@@ -16,6 +16,30 @@ if [[ "$PATH" != *"$COMPOSER_PATH"* ]]; then
   export PATH="$PATH:$COMPOSER_PATH"
 fi
 
+DRUSH_VERSION="8.0.2"
+if [ ! "$(which drush)" ]; then
+  echo "> Installing Drush";
+  composer global require --prefer-source --no-interaction drush/drush:$DRUSH_VERSION
+  if [ ! "$(which drush)" ]; then
+    error "Installation of drush failed."
+  fi
+elif [[ "$(drush --version)" != *"$DRUSH_VERSION"* ]]; then
+  old_version=$(drush --version)
+  old_drush=$(which drush)
+  echo "Drush version is not up to date: $drush_version should be $DRUSH_VERSION. Removing old drush and updating."
+  $AUTO_SUDO mv "$old_drush" "$old_drush-old"
+  composer global require --prefer-source --no-interaction drush/drush:"$DRUSH_VERSION"
+  if [[ "$(drush --version)" != *"$DRUSH_VERSION"* ]]; then
+    echo "Drush Path: $(which drush)"
+    echo "\$PATH: $PATH"
+    echo "$(drush --version)"
+    error "Installation of drush failed."
+  fi
+  echo "Drush updated to $DRUSH_VERSION"
+else
+  echo "> Drush already installed and up to date."
+fi
+
 mkdir $MODULE_NAME 2> /dev/null && echo "Created ./$MODULE_NAME folder.."
 rsync -av $PWD/ $DKAN_MODULE/ --exclude=$DKAN_MODULE
 
