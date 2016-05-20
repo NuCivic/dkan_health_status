@@ -48,11 +48,20 @@ fi
 
 # Only stop on errors starting now..
 set -e
-# Create copy directory.
 
+# Create copy directory.
 mkdir $DKAN_MODULE_LINK 2> /dev/null && echo "Created ./$DKAN_MODULE_LINK folder.."
 rsync -av $PWD/ $DKAN_MODULE_LINK/ --exclude=$DKAN_MODULE --exclude=webroot --exclude=".git"
 cd webroot
-drush si dkan --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test" -y || true
+# If backup doesn't exist create one.
+if [[ ! -f "~/$DKAN_MODULE/backups/latest.sql"  ]]; then
+  drush si dkan --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test" -y || true
+  mkdir ~/$DKAN_MODULE/backups > /dev/null 2>&1 &
+  drush sql-dump > ~/$DKAN_MODULE/backups/latest.sql
+# Install a bare site and import database.
+else
+  drush si --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test" -y || true
+  drush sqlc -y < ~/dkan_health_status/backups/latest.sql
+fi
 drush en $DKAN_MODULE -y
 cd ..
