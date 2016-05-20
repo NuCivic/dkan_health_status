@@ -63,7 +63,7 @@ test:
   override:
   # Fix for behat bug not recognizing symlinked feature files.
   #  - bash dkan/test/circle-behat.sh  docroot/profiles/dkan/modules/dkan/dkan_workflow/test/features docroot/profiles/dkan/test/features:
-     - cd docroot/sites/all/modules/$DKAN_MODULE; test/bin/phpunit --bootstrap=test/boot.php test/phpunit/DKANHealthStatus.php:
+     - cd docroot/sites/all/modules/dkan_health_status; test/bin/phpunit --bootstrap=test/boot.php test/phpunit/DKANHealthStatus.php:
         parallel: true
   post:
     - echo $CIRCLE_ARTIFACTS; cp -av dkan/test/assets $CIRCLE_ARTIFACTS:
