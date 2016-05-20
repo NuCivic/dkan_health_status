@@ -16,6 +16,9 @@ if [[ "$PATH" != *"$COMPOSER_PATH"* ]]; then
   export PATH="$PATH:$COMPOSER_PATH"
 fi
 
+mkdir $MODULE_NAME 2> /dev/null && echo "Created ./$MODULE_NAME folder.." || ( echo "./$MODULE_NAME folder already exists.. exiting."; ls -la; exit 1)
+mv !($MODULE_NAME) $MODULE_NAME && echo "Moved all files into ./$MODULE_NAME.." || ( echo "Error moving files into ./$MODULE_NAME.. exiting."; exit 1)
+
 if [[ ! -f webroot/index.php  ]]; then
   wget http://dkan-acquia.nuamsdev.com/dkan-acquia.tar.gz 
   tar -zxf dkan-acquia.tar.gz
