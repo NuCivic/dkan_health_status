@@ -62,7 +62,11 @@ if [[ ! -f ~/$DKAN_MODULE/backups/latest.sql  ]]; then
 # Install a bare site and import database.
 else
   echo "Using cached database."
-  cp ~/$DKAN_MODULE/backups/settings.php sites/default/settings.php
+  if [[ ! -f ~/$DKAN_MODULE/backups/settings.php  ]]; then
+    cp ~/$DKAN_MODULE/backups/settings.php sites/default/settings.php
+  else
+    drush si minimal --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test" -y || true
+  fi
   drush sqlc -y < ~/dkan_health_status/backups/latest.sql
 fi
 drush en $DKAN_MODULE -y
