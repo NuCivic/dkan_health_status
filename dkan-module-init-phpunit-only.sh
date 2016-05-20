@@ -29,5 +29,5 @@ fi
 set -e
 cp -r $DKAN_MODULE $DKAN_MODULE_LINK
 cd webroot
-ahoy drush si --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test"
-ahoy drush en $DKAN_MODULE -y
+drush si dkan --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test"
+drush en $DKAN_MODULE -y
