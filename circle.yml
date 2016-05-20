@@ -47,6 +47,5 @@ test:
      - cd webroot/sites/all/modules/dkan_health_status; test/bin/phpunit --bootstrap=test/boot.php test/phpunit/DKANHealthStatus.php:
         parallel: true
   post:
-    - echo $CIRCLE_ARTIFACTS; cp -av dkan/test/assets $CIRCLE_ARTIFACTS
     - rm -rf webroot/sites/default/settings.php
     - rm -rf webroot/sites/all/modules/dkan_health_status
