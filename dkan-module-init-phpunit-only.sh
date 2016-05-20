@@ -56,7 +56,7 @@ cd webroot
 # If backup doesn't exist create one.
 if [[ ! -f "~/$DKAN_MODULE/backups/latest.sql"  ]]; then
   drush si dkan --db-url="mysql://ubuntu:@127.0.0.1:3306/circle_test" -y || true
-  mkdir ~/$DKAN_MODULE/backups > /dev/null 2>&1 &
+  mkdir -p ~/$DKAN_MODULE/backups
   drush sql-dump > ~/$DKAN_MODULE/backups/latest.sql
 # Install a bare site and import database.
 else
