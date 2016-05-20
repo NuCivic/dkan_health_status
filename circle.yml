@@ -1,3 +1,6 @@
+## DKAN Circle CI PHPUnit Only.
+## v0.1.0
+
 ## Customize the test machine
 machine:
 
@@ -8,18 +11,9 @@ machine:
   php:
     version: '5.5.11'
 
-  # Override /etc/hosts
-  #hosts:
-    #circlehost: 127.0.0.1
-    #dev.mycompany.com: 127.0.0.1
-
   # Add some environment variables
   environment:
-    # For xvfb / selenium setup (not sure why)
-    #DISPLAY: ':99.0'
     DATABASE_URL: mysql://ubuntu:@127.0.0.1:3306/circle_test
-## Customize checkout
-## Note: Only post is supported.
 checkout:
   post:
     # Remove the extra composer stuff that circleci loads and that is causing conflicts with drush.
@@ -40,7 +34,7 @@ dependencies:
   override:
     - mkdir $CIRCLE_ARTIFACTS/junit
     - printenv
-    - . ./dkan-module-init.sh --deps --build=$DATABASE_URL
+    - . ./dkan-module-init-phpunit-only.sh --deps --build=$DATABASE_URL
     - printenv
     - 'ahoy drush --yes runserver :8888':
         background: true
@@ -51,13 +45,6 @@ dependencies:
   #  - "custom_1"   # relative to the build directory
   #  - "~/custom_2" # relative to the user's home directory
 
-## Customize database setup
-database:
-  override:
-    # replace CircleCI's generated database.yml
-    #- cp config/database.yml.ci config/database.yml
-    #- bundle exec rake db:create db:schema:load
-
 ## Customize test commands
 test:
   override:
@@ -66,22 +53,4 @@ test:
      - cd docroot/sites/all/modules/dkan_health_status; test/bin/phpunit --bootstrap=test/boot.php test/phpunit/DKANHealthStatus.php:
         parallel: true
   post:
-    - echo $CIRCLE_ARTIFACTS; cp -av dkan/test/assets $CIRCLE_ARTIFACTS:
-        parallel: true
-#    - bundle exec rake jasmine:ci: # add an extra test type
-#        environment:
-#          RAILS_ENV: test
-#          RACK_ENV: test
-
-## Customize deployment commands
-#deployment:
-#  staging:
-#    branch: master
-#    heroku:
-#      appname: foo-bar-123
-
-## Custom notifications
-#notify:
-#  webhooks:
-#    # A list of hashes representing hooks. Only the url field is supported.
-#    - url: https://someurl.com/hooks/circle
+    - echo $CIRCLE_ARTIFACTS; cp -av dkan/test/assets $CIRCLE_ARTIFACTS
