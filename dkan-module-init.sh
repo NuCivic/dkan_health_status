@@ -3,7 +3,7 @@
 DKAN_MODULE="dkan_health_status"
 
 # Save for test run
-echo "export DKAN_MODULE_NAME_DKAN_LINK=\"$HOME/$DKAN_MODULE/docroot/sites/all/modules/$DKAN_MODULE\"" >> ~/.bashrc
+DKAN_MODULE_LINK="$HOME/$DKAN_MODULE/docroot/sites/all/modules/$DKAN_MODULE"
 
 # DKAN branch to use
 DKAN_BRANCH="7.x-1.x"
