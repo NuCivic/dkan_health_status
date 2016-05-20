@@ -49,5 +49,6 @@ test:
      - cd webroot/sites/all/modules/dkan_health_status; test/bin/phpunit --bootstrap=test/boot.php test/phpunit/DKANHealthStatus.php:
         parallel: true
   post:
+    - sudo cp webroot/sites/default/settings.php backups/. 
     - sudo rm -rf webroot/sites/default/settings.php
     - rm -rf webroot/sites/all/modules/dkan_health_status
