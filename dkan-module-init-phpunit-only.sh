@@ -41,7 +41,7 @@ else
 fi
 
 mkdir $MODULE_NAME 2> /dev/null && echo "Created ./$MODULE_NAME folder.."
-rsync -av $PWD/ $DKAN_MODULE/ --exclude=$DKAN_MODULE
+rsync -av $PWD/ $DKAN_MODULE/ --exclude=$DKAN_MODULE --exclude=webroot
 
 if [[ ! -f webroot/index.php  ]]; then
   echo "Downloading latest DKAN"
