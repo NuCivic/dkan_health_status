@@ -4,14 +4,22 @@
  * Implements hook_dkan_health_status_monitors().
  */
 function dkan_health_status_dkan_health_status_monitors() {
+  $monitors = array();
   if (module_exists('acquia_search_multi_subs') && module_exists('acquia_agent')) {
     // Make sure user mail addresses are valid.
     $monitors['check_solr_index'] = array(
       'name' => t('Check Solr Index'),
       'description' => t('Ensures solr index matches dataset count.'),
     );
-    return $monitors;
   }
+  if (module_exists('open_data_schema_pod')) {
+    // Make sure user mail addresses are valid.
+    $monitors['check_data_json'] = array(
+      'name' => t('Check Data.json Compliance'),
+      'description' => t('Ensures data.json is passing.'),
+    );
+  }
+  return $monitors;
 }
 
 
@@ -56,5 +64,20 @@ function dkan_health_status_dkan_health_status_monitor_check_solr_index() {
   else {
     return dkan_health_status_message(DKAN_HEALTH_ERROR, t("Dataset count: !node_count does not match Search count: !search_count.",
       array("!node_count" => $count['node_count'], "!search_count" => $count['search_count'])));
+  }
+}
+
+/**
+ * Displays data.json compliance status.
+ */
+function dkan_health_status_dkan_health_status_monitor_check_data_json() {
+  global $base_url;
+  $results = open_data_schema_pod_process_validate($base_url . '/data.json');
+  if ($results['errors']) {
+     return dkan_health_status_message(DKAN_HEALTH_OKAY, t("Data.json is not valid. !error_count datasets are failing.",
+      array("!error_count" => count($results['error_datasets'])));
+  }
+  else {
+    return dkan_health_status_message(DKAN_HEALTH_ERROR, t("Data.json is valid."));
   }
 }
