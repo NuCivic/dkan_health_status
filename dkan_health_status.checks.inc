@@ -75,7 +75,7 @@ function dkan_health_status_dkan_health_status_monitor_check_data_json() {
   $results = open_data_schema_pod_process_validate($base_url . '/data.json');
   if ($results['errors']) {
      return dkan_health_status_message(DKAN_HEALTH_OKAY, t("Data.json is not valid. !error_count datasets are failing.",
-      array("!error_count" => count($results['error_datasets'])));
+      array("!error_count" => count($results['error_datasets']))));
   }
   else {
     return dkan_health_status_message(DKAN_HEALTH_ERROR, t("Data.json is valid."));
